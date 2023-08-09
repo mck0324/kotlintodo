@@ -1,6 +1,6 @@
 package com.example.todo.config
 
-import com.example.todo.database.TodoDatabase
+import com.example.todo.database.TodoDataBase
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration
 class AppConfig {
 
     @Bean(initMethod = "init")
-    fun todoDatabase(): TodoDatabase {
-        return TodoDatabase( )
+    fun todoDatabase(): TodoDataBase {
+        return TodoDataBase()
     }
 
 

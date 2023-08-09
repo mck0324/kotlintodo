@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class TodoRepositoryImpl(
+        val todoDatabase: TodoDataBase
 ): TodoRepository {
-    @Autowired
-    lateinit var TodoDatabase: TodoDataBase
+
 
     override fun save(todo: Todo): Todo {
 
         return todo.apply {
-            this.index = ++TodoDatabase.index
+            this.index = ++todoDatabase.index
         }.run {
-            TodoDatabase.todoList.add(todo)
+            todoDatabase.todoList.add(todo)
             this
         }
 
