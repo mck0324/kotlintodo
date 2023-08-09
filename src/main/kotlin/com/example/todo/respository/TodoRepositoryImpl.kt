@@ -1,18 +1,25 @@
 package com.example.todo.respository
 
 import com.example.todo.database.Todo
-import com.example.todo.database.TodoDatabase
+import com.example.todo.database.TodoDataBase
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class TodoRepositoryImpl: TodoRepository {
-
+class TodoRepositoryImpl(
+): TodoRepository {
     @Autowired
-    lateinit var database: TodoDatabase
+    lateinit var TodoDatabase: TodoDataBase
 
     override fun save(todo: Todo): Todo {
-        TODO("Not yet implemented")
+
+        return todo.apply {
+            this.index = ++TodoDatabase.index
+        }.run {
+            TodoDatabase.todoList.add(todo)
+            this
+        }
+
     }
 
     override fun saveAll(todoList: MutableList<Todo>): Boolean {
