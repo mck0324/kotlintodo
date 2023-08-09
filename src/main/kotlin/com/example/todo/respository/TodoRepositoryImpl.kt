@@ -2,8 +2,8 @@ package com.example.todo.respository
 
 import com.example.todo.database.Todo
 import com.example.todo.database.TodoDataBase
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class TodoRepositoryImpl(
@@ -15,6 +15,8 @@ class TodoRepositoryImpl(
 
         return todo.apply {
             this.index = ++todoDatabase.index
+            this.createdAt = LocalDateTime.now()
+            this.updatedAt = LocalDateTime.now()
         }.run {
             todoDatabase.todoList.add(todo)
             this
@@ -23,7 +25,14 @@ class TodoRepositoryImpl(
     }
 
     override fun saveAll(todoList: MutableList<Todo>): Boolean {
-        TODO("Not yet implemented")
+        return try {
+            todoList.forEach {
+                save(it)
+            }
+            true
+        }catch (e: Exception) {
+            false
+        }
     }
 
     override fun update(todo: Todo): Todo {
@@ -34,8 +43,8 @@ class TodoRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override fun findOne(index: Int): Todo {
-        TODO("Not yet implemented")
+    override fun findOne(index: Int): Todo? {
+        return todoDatabase.todoList.first { it.index == index }
     }
 
     override fun findAll(): MutableList<Todo> {
