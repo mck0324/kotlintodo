@@ -11,7 +11,7 @@ class TodoRepositoryImpl(
 ): TodoRepository {
 
 
-    override fun save(todo: Todo): Todo {
+    override fun save(todo: Todo): Todo? {
 
         return todo.apply {
             this.index = ++todoDatabase.index
@@ -35,12 +35,14 @@ class TodoRepositoryImpl(
         }
     }
 
-    override fun update(todo: Todo): Todo {
-        TODO("Not yet implemented")
-    }
 
     override fun delete(index: Int): Boolean {
-        TODO("Not yet implemented")
+        return findOne(index)?.let {
+            todoDatabase.todoList.remove(it)
+            true
+        }?: kotlin.run {
+            false
+        }
     }
 
     override fun findOne(index: Int): Todo? {
@@ -48,6 +50,6 @@ class TodoRepositoryImpl(
     }
 
     override fun findAll(): MutableList<Todo> {
-        TODO("Not yet implemented")
+        return todoDatabase.todoList
     }
 }
