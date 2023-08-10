@@ -13,15 +13,28 @@ class TodoRepositoryImpl(
 
     override fun save(todo: Todo): Todo? {
 
-        return todo.apply {
-            this.index = ++todoDatabase.index
-            this.createdAt = LocalDateTime.now()
-            this.updatedAt = LocalDateTime.now()
-        }.run {
-            todoDatabase.todoList.add(todo)
-            this
-        }
+        //1. index 있을경우
+        //update
+        return todo.index?.let {index ->
+            findOne(index)?.apply {
+                this.title = todo.title
+                this.description = todo.description
+                this.schedule = todo.schedule
+                this.updatedAt = LocalDateTime.now()
+            }
 
+        }?: kotlin.run {
+            //없을경우
+            //insert
+            todo.apply {
+                this.index = ++todoDatabase.index
+                this.createdAt = LocalDateTime.now()
+                this.updatedAt = LocalDateTime.now()
+            }. run {
+                todoDatabase.todoList.add(todo)
+                this
+            }
+        }
     }
 
     override fun saveAll(todoList: MutableList<Todo>): Boolean {
