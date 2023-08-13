@@ -14,6 +14,7 @@ data class TodoDto (
         var description: String?= null,
 
 
+        @field:NotBlank
         //yyyy-MM-dd HH:mm:ss
         var schedule: String?= null,
 
