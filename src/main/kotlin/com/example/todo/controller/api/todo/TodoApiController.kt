@@ -1,7 +1,11 @@
 package com.example.todo.controller.api.todo
 
 import com.example.todo.model.http.TodoDto
+import com.example.todo.service.TodoService
 import jakarta.validation.Valid
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,13 +17,25 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/api")
-class TodoApiController {
+@RequestMapping("/api/todo")
+class TodoApiController(
+        val todoService: TodoService
+) {
 
     //R
     @GetMapping(path = [""])
-    fun read(@RequestParam(required = false) index: Int? ) {
-
+    fun read(@RequestParam(required = false) index: Int? ): ResponseEntity<Any?> {
+        return index?.let {
+            todoService.read(it)
+        }?.let {
+            return ResponseEntity.ok(it)
+        } ?: kotlin.run {
+            return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY).header(HttpHeaders.LOCATION, "/api/todo/all").build()
+        }
+    }
+    @GetMapping(path = ["/all"])
+    fun readAll(): MutableList<TodoDto> {
+        return todoService.readAll()
     }
     //C
     @PostMapping(path = [""])
