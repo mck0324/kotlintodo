@@ -39,18 +39,21 @@ class TodoApiController(
     }
     //C
     @PostMapping(path = [""])
-    fun create(@Valid @RequestBody todoDto: TodoDto) {
-
+    fun create(@Valid @RequestBody todoDto: TodoDto): TodoDto? {
+        return todoService.create(todoDto)
     }
 
     //U
     @PutMapping(path = [""])
-    fun update(@Valid @RequestBody todoDto: TodoDto) {
-
+    fun update(@Valid @RequestBody todoDto: TodoDto): TodoDto? {
+        return todoService.create(todoDto)
     }
     //D
     @DeleteMapping(path = ["/{index}"])
-    fun delete(@PathVariable(name = "index") _index: Int) {
-
+    fun delete(@PathVariable(name = "index") _index: Int): ResponseEntity<Any> {
+        if (!todoService.delete(_index)) {
+            return ResponseEntity.status(500).build()
+        }
+        return ResponseEntity.ok().build()
     }
 }
