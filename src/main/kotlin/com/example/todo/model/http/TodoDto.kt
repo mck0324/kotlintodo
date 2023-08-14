@@ -33,7 +33,7 @@ data class TodoDto (
                 }
         }
 }
-fun Todo.convertTodo(todo: Todo): TodoDto {
+fun TodoDto.convertTodoDto(todo: Todo): TodoDto {
         return TodoDto().apply {
                 this.index = todo.index
                 this.title = todo.title

@@ -14,7 +14,7 @@ data class Todo (
 
 )
 
-fun Todo.convertTodoDto(todoDto: TodoDto): Todo{
+fun Todo.convertTodo(todoDto: TodoDto): Todo{
     return Todo().apply {
         this.index = todoDto.index
         this.title = todoDto.title
